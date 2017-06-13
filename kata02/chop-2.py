@@ -1,24 +1,28 @@
 import unittest
 
 def chop(target, array):
-	min = 0
-	max = len(array) - 1
-	while min <= max:
-		i = int(min + ((max-min) / 2))
-		if array[i] == target:
-			return i
-		elif target > array[i]:
-			min = i + 1
-		elif target < array[i]:
-			max = i - 1
-	return -1
+	return chopHelp(target, array, 0, len(array) - 1)
+
+def chopHelp(target, array, min, max):
+    i = int(min + ((max-min) / 2))
+    if min > max:
+        return -1
+    else:
+    	if target == array[i]:
+        	return i
+    	elif target < array[i]:
+        	return chopHelp(target, array, min, i-1)
+    	else:
+        	return chopHelp(target, array, i + 1, max)
 
 class TestStringMethods(unittest.TestCase):
-	def test_chop(self):
+
+	def test_chop_one(self):
 		self.assertEqual(-1, chop(3, []))
 		self.assertEqual(-1, chop(3, [1]))
 		self.assertEqual(0,  chop(1, [1]))
-		#
+
+	def test_chop_three(self):
 		self.assertEqual(0,  chop(1, [1, 3, 5]))
 		self.assertEqual(1,  chop(3, [1, 3, 5]))
 		self.assertEqual(2,  chop(5, [1, 3, 5]))
@@ -26,7 +30,8 @@ class TestStringMethods(unittest.TestCase):
 		self.assertEqual(-1, chop(2, [1, 3, 5]))
 		self.assertEqual(-1, chop(4, [1, 3, 5]))
 		self.assertEqual(-1, chop(6, [1, 3, 5]))
-		#
+
+	def test_chop_four(self):
 		self.assertEqual(0,  chop(1, [1, 3, 5, 7]))
 		self.assertEqual(1,  chop(3, [1, 3, 5, 7]))
 		self.assertEqual(2,  chop(5, [1, 3, 5, 7]))
@@ -39,4 +44,4 @@ class TestStringMethods(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    
+
